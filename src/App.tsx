@@ -119,7 +119,7 @@ export default function App() {
       )}
 
       {isUniverse && <SearchBar />}
-      {isUniverse && <TrendingColumns topOffset={earthHeight} isMobile={isMobile} />}
+      {isUniverse && <TrendingColumns topOffset={earthHeight} />}
       {isUniverse && <SearchResults />}
 
       <ServiceSpace />

@@ -1,8 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { motion, AnimatePresence, useInView } from 'framer-motion'
 import {
-  Search, ShoppingCart, Star, ArrowLeft, Plus, Minus, X,
-  Check, Phone, MapPin, CreditCard, Truck, Shield, ChevronRight,
+  Search, ShoppingCart, Star, ArrowLeft, Plus, Minus,
+  Check, Phone, MapPin, CreditCard, ChevronRight,
   Verified, Trash2, Package, Home as HomeIcon, MessageSquare,
   Sparkles, ArrowRight,
 } from 'lucide-react'
@@ -40,6 +40,15 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
     >
       {children}
     </motion.div>
+  )
+}
+
+function Overline({ children, color = '#FBBC05' }: { children: React.ReactNode; color?: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-3">
+      <div className="h-px w-8" style={{ background: color }} />
+      <span className="text-[10px] tracking-[0.4em] font-semibold" style={{ color }}>{children}</span>
+    </div>
   )
 }
 
@@ -108,7 +117,6 @@ export default function MallSpace() {
         )}
       </AnimatePresence>
 
-      {/* ============ HEADER ============ */}
       <div className="flex items-center gap-3 mb-4 border-b border-white/5 pb-3">
         <button
           onClick={() => setView('home')}
@@ -166,9 +174,6 @@ export default function MallSpace() {
   )
 }
 
-// ============================================================
-// HOME — Amazon compact style
-// ============================================================
 function HomeView({ onCategory, onProduct, onStore, searchQ, setSearchQ }: {
   onCategory: (id: string) => void
   onProduct: (id: string) => void
@@ -189,10 +194,10 @@ function HomeView({ onCategory, onProduct, onStore, searchQ, setSearchQ }: {
     return (
       <div>
         <div className="mb-4">
-          <h2 className="text-lg font-medium">
-            Matokeo ya <span className="text-[#FBBC05]">"{searchQ}"</span>
+          <Overline>MATOKEO</Overline>
+          <h2 className="text-2xl md:text-3xl font-light tracking-tight">
+            "{searchQ}" — <span className="italic font-serif text-[#FBBC05]">{results.length} bidhaa</span>
           </h2>
-          <p className="text-xs text-white/40 mt-1">{results.length} bidhaa zimepatikana</p>
         </div>
         <ProductGrid products={results} onProduct={onProduct} emptyText="Hakuna bidhaa inayolingana" />
       </div>
@@ -200,50 +205,72 @@ function HomeView({ onCategory, onProduct, onStore, searchQ, setSearchQ }: {
   }
 
   return (
-    <div className="space-y-6 pb-12">
-      {/* ============ HERO — compact, bright ============ */}
+    <div className="space-y-8 pb-12">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.9 }}
         className="relative rounded-2xl overflow-hidden"
-        style={{
-          background: 'linear-gradient(135deg, #FBBC05 0%, #FF8C00 60%, #EA4335 100%)',
-        }}
+        style={{ background: 'linear-gradient(135deg, #1a0a05 0%, #2a1005 50%, #1a0a05 100%)' }}
       >
-        <div className="relative px-6 md:px-12 py-8 md:py-12 text-center">
+        <div className="absolute inset-0 opacity-60"
+          style={{
+            background: 'radial-gradient(ellipse at 30% 50%, rgba(251,188,5,0.25) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(255,140,0,0.2) 0%, transparent 60%)',
+          }}
+        />
+        <div className="absolute inset-0 opacity-15">
+          <div className="absolute top-0 left-1/4 w-px h-full bg-gradient-to-b from-transparent via-[#FBBC05] to-transparent" />
+          <div className="absolute top-0 right-1/4 w-px h-full bg-gradient-to-b from-transparent via-[#FBBC05] to-transparent" />
+        </div>
+
+        <div className="relative px-6 md:px-12 py-10 md:py-16 text-center">
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.9 }}>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <div className="h-px w-8 bg-[#FBBC05]" />
+              <span className="text-[10px] tracking-[0.4em] font-semibold text-[#FBBC05]">MCENTER MALL</span>
+              <div className="h-px w-8 bg-[#FBBC05]" />
+            </div>
+          </motion.div>
+
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.8 }}
-            className="text-2xl md:text-4xl font-black text-black mb-2 leading-tight"
+            initial={{ opacity: 0, y: 25 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-3xl md:text-6xl lg:text-7xl font-light leading-[0.95] tracking-tight mb-4"
           >
-            Nunua kutoka Wauzaji 10 Waliothibitishwa
+            <span className="block text-white">Ulimwengu wa</span>
+            <span className="block italic font-serif"
+              style={{
+                background: 'linear-gradient(135deg, #FBBC05, #FF8C00)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}>
+              Bidhaa Halisi
+            </span>
           </motion.h1>
+
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-            className="text-black/70 text-xs md:text-sm mb-5"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.9 }}
+            className="text-xs md:text-sm text-white/50 max-w-xl mx-auto font-light mb-8"
           >
-            Bidhaa halisi · Delivery haraka · Malipo salama
+            Wauzaji 10 waliothibitishwa · Bidhaa halisi · Delivery haraka
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
+            initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.9 }}
             className="max-w-xl mx-auto"
           >
-            <div className="flex items-center gap-2 px-4 py-3 rounded-full bg-white shadow-xl">
-              <Search className="w-4 h-4 text-black/40 shrink-0" />
+            <div className="flex items-center gap-3 px-5 py-3.5 rounded-full bg-black/50 backdrop-blur-xl border border-white/10 focus-within:border-[#FBBC05]/50 transition">
+              <Search className="w-4 h-4 text-white/40 shrink-0" />
               <input
                 value={searchQ}
                 onChange={(e) => setSearchQ(e.target.value)}
-                placeholder="Tafuta bidhaa — simu, kitenge, viungo..."
-                className="flex-1 bg-transparent outline-none text-sm text-black placeholder-black/40"
+                placeholder="Tafuta bidhaa..."
+                className="flex-1 bg-transparent outline-none text-sm text-white placeholder-white/30 tracking-wide"
               />
-              <button className="w-8 h-8 rounded-full bg-gradient-to-br from-[#FBBC05] to-[#FF8C00] flex items-center justify-center shrink-0">
+              <button className="w-8 h-8 rounded-full flex items-center justify-center bg-gradient-to-br from-[#FBBC05] to-[#FF8C00] shrink-0">
                 <ArrowRight className="w-3.5 h-3.5 text-black" />
               </button>
             </div>
@@ -251,89 +278,105 @@ function HomeView({ onCategory, onProduct, onStore, searchQ, setSearchQ }: {
         </div>
       </motion.div>
 
-      {/* ============ QUICK CATEGORIES — horizontal ============ */}
       <FadeIn>
         <section>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base md:text-lg font-bold">Kategoria</h2>
-            <span className="text-[10px] text-white/40 tracking-widest">{CATEGORIES.length} CATEGORIES</span>
+            <Overline>CHAGUA KATEGORIA</Overline>
+            <span className="text-[10px] text-white/30 tracking-widest">{CATEGORIES.length} CATEGORIES</span>
           </div>
           <div className="grid grid-cols-4 md:grid-cols-8 gap-2">
             {CATEGORIES.map((c) => (
               <button
                 key={c.id}
                 onClick={() => onCategory(c.id)}
-                className="group p-3 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-[#FBBC05]/50 transition flex flex-col items-center gap-1.5"
+                className="group p-3 rounded-xl bg-white/[0.03] border border-white/10 hover:bg-white/[0.06] hover:border-[#FBBC05]/50 transition flex flex-col items-center gap-1.5"
               >
                 <span className="text-2xl md:text-3xl group-hover:scale-110 transition">{c.icon}</span>
-                <span className="text-[10px] text-white/70 text-center leading-tight">{c.name}</span>
+                <span className="text-[10px] text-white/70 text-center leading-tight group-hover:text-[#FBBC05] transition-colors">{c.name}</span>
               </button>
             ))}
           </div>
         </section>
       </FadeIn>
 
-      {/* ============ DEALS — compact grid ============ */}
       {deals.length > 0 && (
         <FadeIn>
-          <section className="p-3 md:p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+          <section>
             <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#EA4335] animate-pulse" />
-                <h2 className="text-base md:text-lg font-bold">Deals za Leo</h2>
+              <div>
+                <Overline color="#EA4335">OFFERS ZA LEO</Overline>
+                <h2 className="text-2xl md:text-3xl font-light tracking-tight">
+                  Deals <span className="italic font-serif text-[#FBBC05]">Maalum</span>
+                </h2>
               </div>
               <span className="text-[10px] text-[#EA4335] font-bold tracking-widest">
                 🔥 {deals.length} OFFERS
               </span>
             </div>
-            <ProductGrid products={deals} onProduct={onProduct} compact />
+            <ProductGrid products={deals} onProduct={onProduct} />
           </section>
         </FadeIn>
       )}
 
-      {/* ============ FEATURED ============ */}
       {featured.length > 0 && (
         <FadeIn>
           <section>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base md:text-lg font-bold">⭐ Bidhaa Maalum</h2>
-              <span className="text-[10px] text-white/40 tracking-widest">{featured.length} BIDHAA</span>
+              <div>
+                <Overline>CURATED</Overline>
+                <h2 className="text-2xl md:text-3xl font-light tracking-tight">
+                  Bidhaa <span className="italic font-serif text-[#FBBC05]">Maalum</span>
+                </h2>
+              </div>
+              <span className="text-[10px] text-white/30 tracking-widest">{featured.length} BIDHAA</span>
             </div>
-            <ProductGrid products={featured} onProduct={onProduct} compact />
+            <ProductGrid products={featured} onProduct={onProduct} />
           </section>
         </FadeIn>
       )}
 
-      {/* ============ TRENDING ============ */}
       {trending.length > 0 && (
         <FadeIn>
           <section>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-base md:text-lg font-bold">📈 Zinazouzwa Sana</h2>
-              <span className="text-[10px] text-white/40 tracking-widest">{trending.length} BIDHAA</span>
+              <div>
+                <Overline color="#34A853">IN DEMAND</Overline>
+                <h2 className="text-2xl md:text-3xl font-light tracking-tight">
+                  Zinazouzwa <span className="italic font-serif text-[#FBBC05]">Sana</span>
+                </h2>
+              </div>
+              <span className="text-[10px] text-white/30 tracking-widest">{trending.length} BIDHAA</span>
             </div>
-            <ProductGrid products={trending} onProduct={onProduct} compact />
+            <ProductGrid products={trending} onProduct={onProduct} />
           </section>
         </FadeIn>
       )}
 
-      {/* ============ ALL PRODUCTS ============ */}
       <FadeIn>
         <section>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base md:text-lg font-bold">Bidhaa Zote</h2>
-            <span className="text-[10px] text-white/40 tracking-widest">{PRODUCTS.length} BIDHAA</span>
+            <div>
+              <Overline>COLLECTION</Overline>
+              <h2 className="text-2xl md:text-3xl font-light tracking-tight">
+                Bidhaa <span className="italic font-serif text-[#FBBC05]">Zote</span>
+              </h2>
+            </div>
+            <span className="text-[10px] text-white/30 tracking-widest">{PRODUCTS.length} BIDHAA</span>
           </div>
-          <ProductGrid products={PRODUCTS} onProduct={onProduct} compact />
+          <ProductGrid products={PRODUCTS} onProduct={onProduct} />
         </section>
       </FadeIn>
 
-      {/* ============ TOP SELLERS — compact ============ */}
       <FadeIn>
         <section>
           <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base md:text-lg font-bold">🏪 Wauzaji Bora</h2>
-            <span className="text-[10px] text-white/40 tracking-widest">{SELLERS.length} STORES</span>
+            <div>
+              <Overline>PARTNERS</Overline>
+              <h2 className="text-2xl md:text-3xl font-light tracking-tight">
+                Wauzaji <span className="italic font-serif text-[#FBBC05]">Bora</span>
+              </h2>
+            </div>
+            <span className="text-[10px] text-white/30 tracking-widest">{SELLERS.length} STORES</span>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             {SELLERS.map((s) => (
@@ -346,14 +389,10 @@ function HomeView({ onCategory, onProduct, onStore, searchQ, setSearchQ }: {
   )
 }
 
-// ============================================================
-// COMPACT PRODUCT GRID — Amazon style
-// ============================================================
-function ProductGrid({ products, onProduct, emptyText, compact = false }: {
+function ProductGrid({ products, onProduct, emptyText }: {
   products: Product[]
   onProduct: (id: string) => void
   emptyText?: string
-  compact?: boolean
 }) {
   if (products.length === 0) {
     return (
@@ -366,115 +405,124 @@ function ProductGrid({ products, onProduct, emptyText, compact = false }: {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 md:gap-3">
       {products.map((p, i) => (
-        <FadeIn key={p.id} delay={Math.min(i, 5) * 0.03}>
-          <ProductCardCompact product={p} onClick={() => onProduct(p.id)} />
+        <FadeIn key={p.id} delay={Math.min(i, 6) * 0.02}>
+          <ProductCardElegant product={p} onClick={() => onProduct(p.id)} />
         </FadeIn>
       ))}
     </div>
   )
 }
 
-// ============================================================
-// PRODUCT CARD — Bright white, compact
-// ============================================================
-function ProductCardCompact({ product, onClick }: { product: Product; onClick: () => void }) {
+function ProductCardElegant({ product, onClick }: { product: Product; onClick: () => void }) {
   const seller = getSeller(product.sellerId)
   const discount = product.oldPrice ? Math.round((1 - product.price / product.oldPrice) * 100) : 0
 
   return (
-    <button onClick={onClick} className="group w-full text-left bg-white rounded-lg overflow-hidden hover:shadow-[0_8px_30px_rgba(251,188,5,0.25)] transition-all duration-300">
-      {/* Image */}
-      <div className="relative aspect-square bg-white overflow-hidden">
+    <button
+      onClick={onClick}
+      className="group w-full text-left rounded-xl overflow-hidden border border-white/8 hover:border-[#FBBC05]/50 transition-all duration-500"
+      style={{
+        background: 'linear-gradient(160deg, rgba(251,188,5,0.02) 0%, rgba(255,255,255,0.02) 100%)',
+      }}
+    >
+      <div className="relative aspect-square overflow-hidden">
         <img
           src={product.images[0]}
           alt={product.name}
           loading="lazy"
-          className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
+          className="w-full h-full object-cover group-hover:scale-105 transition duration-700"
         />
 
-        {/* Discount badge */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+        <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{ boxShadow: 'inset 0 0 40px rgba(251,188,5,0.25)' }} />
+
         {discount > 0 && (
-          <div className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-[#EA4335] text-white text-[10px] font-bold">
+          <div className="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] tracking-widest font-bold text-black"
+            style={{ background: 'linear-gradient(135deg, #FBBC05, #FF8C00)' }}>
             -{discount}%
           </div>
         )}
 
-        {/* Stock low */}
         {product.stock > 0 && product.stock < 5 && (
-          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/80 text-[9px] font-bold text-[#FBBC05]">
-            {product.stock} left
+          <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-black/70 backdrop-blur text-[9px] tracking-widest font-bold text-[#FBBC05]">
+            {product.stock} LEFT
           </div>
         )}
 
-        {/* Out of stock overlay */}
         {product.stock === 0 && (
-          <div className="absolute inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center">
-            <span className="text-[10px] font-bold text-black/70 tracking-wider">IMEISHA</span>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center">
+            <span className="text-[10px] tracking-[0.3em] text-white/80">IMEISHA</span>
           </div>
         )}
+
+        <div className="absolute bottom-2 left-2 right-2 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+          <div className="text-center py-2 rounded-full bg-black/60 backdrop-blur text-[9px] tracking-[0.3em] text-[#FBBC05] font-semibold">
+            VIEW
+          </div>
+        </div>
       </div>
 
-      {/* Info — dark text on white */}
-      <div className="p-2 md:p-2.5">
-        <h3 className="text-[11px] md:text-xs font-medium text-black leading-tight line-clamp-2 min-h-[28px] group-hover:text-[#FF8C00] transition-colors">
+      <div className="p-2.5 md:p-3">
+        {seller && (
+          <p className="text-[8px] md:text-[9px] tracking-[0.3em] text-[#FBBC05]/70 mb-1 truncate">
+            {seller.name.toUpperCase()}
+          </p>
+        )}
+
+        <h3 className="text-[11px] md:text-xs font-light text-white leading-tight line-clamp-2 min-h-[28px] group-hover:text-[#FBBC05] transition-colors">
           {product.name}
         </h3>
 
-        <div className="flex items-center gap-1 mt-1">
-          <Star className="w-2.5 h-2.5 text-[#FF8C00]" fill="#FF8C00" />
-          <span className="text-[9px] text-black/60 font-medium">{product.rating}</span>
-          <span className="text-[9px] text-black/30">·</span>
-          <span className="text-[9px] text-black/50">{product.soldCount}</span>
+        <div className="flex items-center gap-1 mt-1.5">
+          <Star className="w-2.5 h-2.5 text-[#FBBC05]" fill="#FBBC05" />
+          <span className="text-[9px] text-white/50">{product.rating}</span>
+          <span className="text-[9px] text-white/25">·</span>
+          <span className="text-[9px] text-white/40">{product.soldCount} sold</span>
         </div>
 
         <div className="mt-1.5 flex items-baseline gap-1.5 flex-wrap">
-          <span className="text-sm md:text-base font-bold text-black">{formatTZS(product.price)}</span>
+          <span className="text-xs md:text-sm font-light text-[#FBBC05]">{formatTZS(product.price)}</span>
           {product.oldPrice && (
-            <span className="text-[9px] text-black/40 line-through">{formatTZS(product.oldPrice)}</span>
+            <span className="text-[9px] text-white/25 line-through">{formatTZS(product.oldPrice)}</span>
           )}
         </div>
-
-        {seller && (
-          <p className="text-[9px] text-black/50 mt-1 truncate">{seller.name}</p>
-        )}
       </div>
     </button>
   )
 }
 
-// ============================================================
-// COMPACT STORE CARD
-// ============================================================
 function StoreCardCompact({ seller, onClick }: { seller: any; onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="group w-full p-2.5 rounded-xl bg-white/[0.04] border border-white/10 hover:bg-white/[0.08] hover:border-[#FBBC05]/50 transition text-left"
+      className="group w-full p-3 rounded-xl border border-white/8 hover:border-[#FBBC05]/50 transition-all duration-500 text-left"
+      style={{
+        background: 'linear-gradient(160deg, rgba(251,188,5,0.02) 0%, rgba(255,255,255,0.02) 100%)',
+      }}
     >
-      <div className="flex items-center gap-2 mb-2">
-        <img src={seller.logo} alt={seller.name} className="w-10 h-10 rounded-full object-cover shrink-0" />
+      <div className="flex items-center gap-2.5 mb-2">
+        <img src={seller.logo} alt={seller.name} className="w-11 h-11 rounded-full object-cover shrink-0 border border-white/10 group-hover:border-[#FBBC05]/50 transition" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1">
-            <h3 className="text-xs font-bold text-white truncate">{seller.name}</h3>
+            <h3 className="text-xs font-light text-white truncate group-hover:text-[#FBBC05] transition-colors">{seller.name}</h3>
             {seller.verified && <Verified className="w-3 h-3 text-[#4285F4] shrink-0" />}
           </div>
-          <div className="flex items-center gap-1 text-[9px] text-white/50 mt-0.5">
+          <div className="flex items-center gap-1 text-[9px] text-white/40 mt-0.5">
             <Star className="w-2.5 h-2.5 text-[#FBBC05]" fill="#FBBC05" />
             <span>{seller.rating}</span>
           </div>
         </div>
       </div>
-      <div className="flex items-center gap-1 text-[9px] text-white/40">
+      <div className="flex items-center gap-1 text-[9px] tracking-widest text-white/30 group-hover:text-[#FBBC05] transition-colors">
         <MapPin className="w-2.5 h-2.5" />
-        <span className="truncate">{seller.location}</span>
+        <span className="truncate">{seller.location.toUpperCase()}</span>
       </div>
     </button>
   )
 }
 
-// ============================================================
-// CATEGORY VIEW
-// ============================================================
 function CategoryView({ categoryId, onProduct, onBack, searchQ, setSearchQ }: {
   categoryId: string
   onProduct: (id: string) => void
@@ -489,36 +537,33 @@ function CategoryView({ categoryId, onProduct, onBack, searchQ, setSearchQ }: {
     : products
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <button onClick={onBack} className="flex items-center gap-1.5 text-xs tracking-widest text-white/50 hover:text-[#FBBC05] transition">
         <ArrowLeft className="w-3.5 h-3.5" /> RUDI
       </button>
 
-      {/* Category header — bright */}
-      <div className="rounded-2xl p-5 md:p-8 text-center"
-        style={{ background: `linear-gradient(135deg, ${cat?.color}25 0%, ${cat?.color}10 100%)`, border: `1px solid ${cat?.color}40` }}>
-        <div className="text-4xl md:text-6xl mb-3">{cat?.icon}</div>
-        <h1 className="text-2xl md:text-4xl font-black mb-1" style={{ color: cat?.color }}>{cat?.name}</h1>
-        <p className="text-xs text-white/60">{products.length} bidhaa</p>
+      <div className="text-center py-8 border-b border-white/5">
+        <div className="text-5xl md:text-6xl mb-4">{cat?.icon}</div>
+        <Overline color={cat?.color}>{String(products.length).padStart(2, '0')} BIDHAA</Overline>
+        <h1 className="text-3xl md:text-5xl font-light tracking-tight">
+          <span className="italic font-serif" style={{ color: cat?.color }}>{cat?.name}</span>
+        </h1>
       </div>
 
       <div className="max-w-xl mx-auto">
-        <div className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 focus-within:border-[#FBBC05]/50 transition">
+        <div className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/5 border border-white/10 focus-within:border-[#FBBC05]/50 transition">
           <Search className="w-4 h-4 text-white/40" />
           <input value={searchQ} onChange={(e) => setSearchQ(e.target.value)}
             placeholder="Tafuta kwenye category..."
-            className="flex-1 bg-transparent outline-none text-sm text-white placeholder-white/30" />
+            className="flex-1 bg-transparent outline-none text-sm text-white placeholder-white/30 tracking-wide" />
         </div>
       </div>
 
-      <ProductGrid products={filtered} onProduct={onProduct} compact />
+      <ProductGrid products={filtered} onProduct={onProduct} />
     </div>
   )
 }
 
-// ============================================================
-// STORE VIEW
-// ============================================================
 function StoreView({ sellerId, onProduct, onBack, onChat }: {
   sellerId: string
   onProduct: (id: string) => void
@@ -530,12 +575,11 @@ function StoreView({ sellerId, onProduct, onBack, onChat }: {
   if (!seller) return null
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       <button onClick={onBack} className="flex items-center gap-1.5 text-xs tracking-widest text-white/50 hover:text-[#FBBC05] transition">
         <ArrowLeft className="w-3.5 h-3.5" /> RUDI
       </button>
 
-      {/* Store hero */}
       <div className="relative rounded-2xl overflow-hidden h-40 md:h-56">
         <img src={seller.banner} alt={seller.name} className="w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#000005] via-black/40 to-transparent" />
@@ -543,7 +587,7 @@ function StoreView({ sellerId, onProduct, onBack, onChat }: {
           <img src={seller.logo} alt={seller.name} className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-4 border-[#000005] shrink-0" />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
-              <h1 className="text-lg md:text-2xl font-black text-white truncate">{seller.name}</h1>
+              <h1 className="text-lg md:text-2xl font-light text-white truncate">{seller.name}</h1>
               {seller.verified && <Verified className="w-4 h-4 md:w-5 md:h-5 text-[#4285F4] shrink-0" />}
             </div>
             <div className="flex items-center gap-2 text-[10px] md:text-xs text-white/70 mt-0.5 flex-wrap">
@@ -555,14 +599,13 @@ function StoreView({ sellerId, onProduct, onBack, onChat }: {
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex flex-wrap gap-2">
         <button onClick={() => onChat(seller.id)}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#4285F4] hover:bg-[#4285F4]/90 text-white text-xs font-bold tracking-widest transition">
+          className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black text-xs font-bold tracking-widest hover:opacity-90 transition">
           <MessageSquare className="w-3.5 h-3.5" /> CHAT
         </button>
         <a href={`https://wa.me/${seller.whatsapp}`} target="_blank" rel="noreferrer"
-          className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#25D366] hover:bg-[#25D366]/90 text-white text-xs font-bold tracking-widest transition">
+          className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-bold tracking-widest transition">
           WHATSAPP
         </a>
         <a href={`tel:${seller.phone}`}
@@ -571,21 +614,19 @@ function StoreView({ sellerId, onProduct, onBack, onChat }: {
         </a>
       </div>
 
-      <p className="text-sm text-white/60 max-w-2xl">{seller.description}</p>
+      <p className="text-sm text-white/60 max-w-2xl font-light leading-relaxed">{seller.description}</p>
 
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-base md:text-lg font-bold">Bidhaa ({products.length})</h2>
+          <Overline>BIDHAA</Overline>
+          <span className="text-[10px] text-white/30 tracking-widest">{products.length} ITEMS</span>
         </div>
-        <ProductGrid products={products} onProduct={onProduct} compact />
+        <ProductGrid products={products} onProduct={onProduct} />
       </div>
     </div>
   )
 }
 
-// ============================================================
-// PRODUCT VIEW
-// ============================================================
 function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
   productId: string
   onAdd: (id: string, qty: number) => void
@@ -604,15 +645,14 @@ function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
   const similar = PRODUCTS.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 6)
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <button onClick={onBack} className="flex items-center gap-1.5 text-xs tracking-widest text-white/50 hover:text-[#FBBC05] transition">
         <ArrowLeft className="w-3.5 h-3.5" /> RUDI
       </button>
 
-      <div className="grid md:grid-cols-2 gap-6 md:gap-10">
-        {/* Images — bright white bg */}
+      <div className="grid md:grid-cols-2 gap-8 md:gap-12">
         <div>
-          <div className="aspect-square rounded-2xl overflow-hidden bg-white border border-white/10">
+          <div className="aspect-square rounded-2xl overflow-hidden border border-white/10">
             <motion.img
               key={imgIndex}
               initial={{ opacity: 0, scale: 1.05 }}
@@ -627,7 +667,7 @@ function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
             <div className="flex gap-2 mt-3 overflow-x-auto no-scrollbar">
               {product.images.map((img, i) => (
                 <button key={i} onClick={() => setImgIndex(i)}
-                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 transition bg-white ${
+                  className={`w-16 h-16 rounded-lg overflow-hidden border-2 shrink-0 transition ${
                     i === imgIndex ? 'border-[#FBBC05]' : 'border-white/10 hover:border-white/30'
                   }`}>
                   <img src={img} alt="" className="w-full h-full object-cover" />
@@ -637,39 +677,35 @@ function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
           )}
         </div>
 
-        {/* Details */}
         <div className="flex flex-col">
           {seller && (
-            <p className="text-[10px] tracking-[0.3em] text-[#FBBC05] mb-2">{seller.name.toUpperCase()}</p>
+            <p className="text-[10px] tracking-[0.4em] text-[#FBBC05] mb-3">{seller.name.toUpperCase()}</p>
           )}
 
-          <h1 className="text-2xl md:text-4xl font-bold tracking-tight mb-3 leading-tight text-white">
+          <h1 className="text-2xl md:text-4xl font-light tracking-tight mb-3 leading-tight">
             {product.name}
           </h1>
 
-          <div className="flex items-center gap-3 text-xs text-white/60 mb-5 flex-wrap">
-            <span className="flex items-center gap-1">
-              <Star className="w-3.5 h-3.5 text-[#FBBC05]" fill="#FBBC05" />
-              {product.rating} ({product.reviewsCount})
-            </span>
+          <div className="flex items-center gap-3 text-xs text-white/60 mb-5">
+            <span className="flex items-center gap-1"><Star className="w-3.5 h-3.5 text-[#FBBC05]" fill="#FBBC05" /> {product.rating} ({product.reviewsCount})</span>
             <span>·</span>
             <span>{product.soldCount} zimeuzwa</span>
           </div>
 
           <div className="flex items-baseline gap-3 mb-5 pb-5 border-b border-white/10">
-            <span className="text-3xl md:text-4xl font-black text-[#FBBC05]">{formatTZS(product.price)}</span>
+            <span className="text-3xl md:text-4xl font-light text-[#FBBC05]">{formatTZS(product.price)}</span>
             {product.oldPrice && (
               <>
                 <span className="text-base text-white/40 line-through">{formatTZS(product.oldPrice)}</span>
-                <span className="text-xs font-bold text-white bg-[#EA4335] px-2.5 py-1 rounded">-{discount}%</span>
+                <span className="text-xs font-bold text-white bg-[#EA4335] px-2.5 py-1 rounded-full tracking-widest">-{discount}%</span>
               </>
             )}
           </div>
 
-          <p className="text-sm text-white/70 leading-relaxed mb-5">{product.description}</p>
+          <p className="text-sm text-white/70 leading-relaxed mb-5 font-light">{product.description}</p>
 
           <div className="flex items-center gap-2 mb-5">
-            <span className={`text-xs font-bold tracking-wider ${product.stock > 0 ? 'text-[#34A853]' : 'text-[#EA4335]'}`}>
+            <span className={`text-xs tracking-widest font-semibold ${product.stock > 0 ? 'text-[#34A853]' : 'text-[#EA4335]'}`}>
               {product.stock > 0 ? `✓ ZIPO ${product.stock}` : '✗ IMEISHA'}
             </span>
           </div>
@@ -681,14 +717,14 @@ function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
                   className="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition">
                   <Minus className="w-4 h-4" />
                 </button>
-                <span className="text-base font-bold w-10 text-center">{qty}</span>
+                <span className="text-base font-light w-10 text-center">{qty}</span>
                 <button onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
                   className="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition">
                   <Plus className="w-4 h-4" />
                 </button>
               </div>
               <button onClick={() => onAdd(product.id, qty)}
-                className="flex-1 py-4 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] hover:opacity-90 text-black font-bold text-sm flex items-center justify-center gap-2 transition">
+                className="flex-1 py-4 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] hover:opacity-90 text-black font-bold text-sm tracking-widest flex items-center justify-center gap-2 transition">
                 <ShoppingCart className="w-4 h-4" /> ONGEZA CART
               </button>
             </div>
@@ -698,9 +734,10 @@ function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
             <>
               <button
                 onClick={() => onChat(seller.id, product.id)}
-                className="w-full mb-3 py-3 rounded-full bg-[#4285F4]/15 border border-[#4285F4]/40 hover:bg-[#4285F4]/25 text-sm font-semibold flex items-center justify-center gap-2 transition text-[#8ab4f8]"
+                className="w-full mb-3 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-sm tracking-widest flex items-center justify-center gap-2 transition"
               >
-                <MessageSquare className="w-4 h-4" /> CHAT NA MUUZAJI
+                <MessageSquare className="w-4 h-4 text-[#FBBC05]" />
+                CHAT NA MUUZAJI
               </button>
 
               <button onClick={() => onStore(seller.id)}
@@ -708,16 +745,16 @@ function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
                 <img src={seller.logo} alt={seller.name} className="w-12 h-12 rounded-full object-cover shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1">
-                    <h3 className="text-sm font-bold text-white truncate">{seller.name}</h3>
+                    <h3 className="text-sm font-light text-white truncate">{seller.name}</h3>
                     {seller.verified && <Verified className="w-3.5 h-3.5 text-[#4285F4]" />}
                   </div>
-                  <div className="flex items-center gap-2 text-[10px] text-white/50 mt-0.5">
+                  <div className="flex items-center gap-2 text-[10px] text-white/40 mt-0.5 tracking-wide">
                     <span className="flex items-center gap-0.5"><Star className="w-2.5 h-2.5 text-[#FBBC05]" fill="#FBBC05" /> {seller.rating}</span>
                     <span>·</span>
                     <span>{seller.location}</span>
                   </div>
                 </div>
-                <ChevronRight className="w-4 h-4 text-white/40" />
+                <ChevronRight className="w-4 h-4 text-white/30" />
               </button>
             </>
           )}
@@ -726,19 +763,19 @@ function ProductView({ productId, onAdd, onStore, onBack, onProduct, onChat }: {
 
       {similar.length > 0 && (
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base md:text-lg font-bold">Bidhaa Zinazofanana</h2>
+          <div className="text-center mb-8">
+            <Overline>UNAWEZA KUPENDA</Overline>
+            <h2 className="text-2xl md:text-3xl font-light tracking-tight">
+              Bidhaa <span className="italic font-serif text-[#FBBC05]">Zinazofanana</span>
+            </h2>
           </div>
-          <ProductGrid products={similar} onProduct={onProduct} compact />
+          <ProductGrid products={similar} onProduct={onProduct} />
         </div>
       )}
     </div>
   )
 }
 
-// ============================================================
-// CART VIEW
-// ============================================================
 function CartView({ cart, onUpdate, onRemove, onBack, onCheckout, onProduct }: {
   cart: { item: CartItem; product: Product }[]
   onUpdate: (id: string, qty: number) => void
@@ -753,12 +790,12 @@ function CartView({ cart, onUpdate, onRemove, onBack, onCheckout, onProduct }: {
 
   if (cart.length === 0) {
     return (
-      <div className="text-center py-16">
-        <ShoppingCart className="w-14 h-14 text-white/15 mx-auto mb-4" />
-        <h2 className="text-xl md:text-2xl font-bold mb-2">Cart yako ni tupu</h2>
-        <p className="text-sm text-white/50 mb-6">Anza kuongeza bidhaa</p>
+      <div className="text-center py-20">
+        <ShoppingCart className="w-16 h-16 text-white/15 mx-auto mb-6" />
+        <h2 className="text-2xl md:text-3xl font-light mb-3">Cart yako ni <span className="italic font-serif text-[#FBBC05]">tupu</span></h2>
+        <p className="text-sm text-white/50 mb-8 font-light">Anza kuongeza bidhaa unazopenda</p>
         <button onClick={onBack}
-          className="px-6 py-3 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black text-sm font-bold tracking-widest hover:opacity-90 transition">
+          className="px-8 py-3 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black text-sm font-bold tracking-widest hover:opacity-90 transition">
           ANZA KUNUNUA
         </button>
       </div>
@@ -766,13 +803,16 @@ function CartView({ cart, onUpdate, onRemove, onBack, onCheckout, onProduct }: {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <button onClick={onBack} className="flex items-center gap-1.5 text-xs tracking-widest text-white/50 hover:text-[#FBBC05] transition">
         <ArrowLeft className="w-3.5 h-3.5" /> ENDELEA KUNUNUA
       </button>
 
       <div>
-        <h1 className="text-2xl md:text-3xl font-black">Cart Yangu ({cart.length})</h1>
+        <Overline>{String(cart.length).padStart(2, '0')} BIDHAA</Overline>
+        <h1 className="text-3xl md:text-4xl font-light tracking-tight">
+          Cart <span className="italic font-serif text-[#FBBC05]">Yako</span>
+        </h1>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-5">
@@ -780,17 +820,19 @@ function CartView({ cart, onUpdate, onRemove, onBack, onCheckout, onProduct }: {
           {cart.map(({ item, product }) => {
             const seller = getSeller(product.sellerId)
             return (
-              <div key={product.id} className="flex gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/10">
+              <div key={product.id} className="flex gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/10">
                 <button onClick={() => onProduct(product.id)} className="shrink-0">
                   <img src={product.images[0]} alt={product.name}
-                    className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover border border-white/10 bg-white" />
+                    className="w-20 h-20 md:w-24 md:h-24 rounded-lg object-cover border border-white/10" />
                 </button>
                 <div className="flex-1 min-w-0">
+                  {seller && (
+                    <p className="text-[9px] tracking-[0.3em] text-[#FBBC05]/70 mb-1 truncate">{seller.name.toUpperCase()}</p>
+                  )}
                   <button onClick={() => onProduct(product.id)} className="text-left">
-                    <h3 className="text-sm font-semibold text-white truncate hover:text-[#FBBC05] transition">{product.name}</h3>
+                    <h3 className="text-sm font-light text-white truncate hover:text-[#FBBC05] transition">{product.name}</h3>
                   </button>
-                  {seller && <p className="text-[10px] text-white/50 mt-0.5 truncate">{seller.name}</p>}
-                  <p className="text-base font-bold text-[#FBBC05] mt-1">{formatTZS(product.price)}</p>
+                  <p className="text-base font-light text-[#FBBC05] mt-1">{formatTZS(product.price)}</p>
 
                   <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center gap-1 bg-black/40 rounded-full p-0.5 border border-white/10">
@@ -798,7 +840,7 @@ function CartView({ cart, onUpdate, onRemove, onBack, onCheckout, onProduct }: {
                         className="w-7 h-7 rounded-full hover:bg-white/10 flex items-center justify-center">
                         <Minus className="w-3 h-3" />
                       </button>
-                      <span className="text-xs font-bold w-6 text-center">{item.quantity}</span>
+                      <span className="text-xs font-light w-6 text-center">{item.quantity}</span>
                       <button onClick={() => onUpdate(product.id, item.quantity + 1)}
                         className="w-7 h-7 rounded-full hover:bg-white/10 flex items-center justify-center">
                         <Plus className="w-3 h-3" />
@@ -816,18 +858,21 @@ function CartView({ cart, onUpdate, onRemove, onBack, onCheckout, onProduct }: {
         </div>
 
         <div className="lg:col-span-1">
-          <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 sticky top-4">
-            <h2 className="text-xs tracking-widest font-bold mb-4 text-white/60">MUHTASARI</h2>
+          <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 sticky top-4">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-8 bg-[#FBBC05]" />
+              <span className="text-[10px] tracking-[0.4em] text-[#FBBC05] font-semibold">MUHTASARI</span>
+            </div>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between text-white/70"><span>Subtotal</span><span>{formatTZS(subtotal)}</span></div>
-              <div className="flex justify-between text-white/70"><span>Delivery</span><span>{formatTZS(deliveryFee)}</span></div>
+              <div className="flex justify-between text-white/60"><span className="font-light">Subtotal</span><span>{formatTZS(subtotal)}</span></div>
+              <div className="flex justify-between text-white/60"><span className="font-light">Delivery</span><span>{formatTZS(deliveryFee)}</span></div>
               <div className="border-t border-white/10 pt-3 flex justify-between items-baseline">
-                <span className="font-bold">Jumla</span>
-                <span className="text-2xl font-black text-[#FBBC05]">{formatTZS(total)}</span>
+                <span className="text-xs tracking-widest text-white/50">JUMLA</span>
+                <span className="text-2xl font-light text-[#FBBC05]">{formatTZS(total)}</span>
               </div>
             </div>
             <button onClick={onCheckout}
-              className="w-full mt-5 py-3.5 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black font-bold text-sm tracking-widest hover:opacity-90 transition">
+              className="w-full mt-6 py-4 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black font-bold text-sm tracking-widest hover:opacity-90 transition">
               ENDELEA CHECKOUT
             </button>
           </div>
@@ -837,9 +882,6 @@ function CartView({ cart, onUpdate, onRemove, onBack, onCheckout, onProduct }: {
   )
 }
 
-// ============================================================
-// CHECKOUT VIEW
-// ============================================================
 function CheckoutView({ cart, onBack, onPlace }: {
   cart: { item: CartItem; product: Product }[]
   onBack: () => void
@@ -887,33 +929,40 @@ function CheckoutView({ cart, onBack, onPlace }: {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <button onClick={onBack} className="flex items-center gap-1.5 text-xs tracking-widest text-white/50 hover:text-[#FBBC05] transition">
         <ArrowLeft className="w-3.5 h-3.5" /> RUDI
       </button>
 
-      <h1 className="text-2xl md:text-3xl font-black">Checkout</h1>
+      <div>
+        <Overline>HATUA YA MWISHO</Overline>
+        <h1 className="text-3xl md:text-4xl font-light tracking-tight">
+          <span className="italic font-serif text-[#FBBC05]">Checkout</span>
+        </h1>
+      </div>
 
-      <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-5">
+      <form onSubmit={handleSubmit} className="grid lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2 space-y-5">
-          <div className="p-4 md:p-5 rounded-2xl bg-white/[0.04] border border-white/10">
-            <h2 className="text-xs tracking-widest font-bold mb-4 text-white/60 flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-[#FBBC05]" /> TAARIFA ZA DELIVERY
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <Input label="Jina kamili *" value={form.name} onChange={(v) => setForm({ ...form, name: v })} placeholder="Jina lako" />
-              <Input label="Simu *" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} placeholder="+255 7XX XXX XXX" type="tel" />
+          <div className="p-5 md:p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+            <div className="flex items-center gap-3 mb-5">
+              <MapPin className="w-4 h-4 text-[#FBBC05]" />
+              <span className="text-[10px] tracking-[0.4em] text-[#FBBC05] font-semibold">TAARIFA ZA DELIVERY</span>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Input label="JINA KAMILI *" value={form.name} onChange={(v) => setForm({ ...form, name: v })} placeholder="Jina lako" />
+              <Input label="SIMU *" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} placeholder="+255 7XX XXX XXX" type="tel" />
               <div className="sm:col-span-2">
-                <Input label="Anwani *" value={form.address} onChange={(v) => setForm({ ...form, address: v })} placeholder="Mtaa, nyumba, landmark" />
+                <Input label="ANWANI *" value={form.address} onChange={(v) => setForm({ ...form, address: v })} placeholder="Mtaa, nyumba, landmark" />
               </div>
-              <Input label="Mji *" value={form.city} onChange={(v) => setForm({ ...form, city: v })} placeholder="Dar es Salaam" />
+              <Input label="MJI *" value={form.city} onChange={(v) => setForm({ ...form, city: v })} placeholder="Dar es Salaam" />
             </div>
           </div>
 
-          <div className="p-4 md:p-5 rounded-2xl bg-white/[0.04] border border-white/10">
-            <h2 className="text-xs tracking-widest font-bold mb-4 text-white/60 flex items-center gap-2">
-              <CreditCard className="w-4 h-4 text-[#FBBC05]" /> NJIA YA MALIPO
-            </h2>
+          <div className="p-5 md:p-6 rounded-2xl bg-white/[0.03] border border-white/10">
+            <div className="flex items-center gap-3 mb-5">
+              <CreditCard className="w-4 h-4 text-[#FBBC05]" />
+              <span className="text-[10px] tracking-[0.4em] text-[#FBBC05] font-semibold">NJIA YA MALIPO</span>
+            </div>
             <div className="space-y-2">
               {paymentMethods.map((m) => (
                 <label key={m} className={`flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition ${
@@ -921,42 +970,46 @@ function CheckoutView({ cart, onBack, onPlace }: {
                 }`}>
                   <input type="radio" name="payment" checked={form.payment === m}
                     onChange={() => setForm({ ...form, payment: m })} className="accent-[#FBBC05]" />
-                  <span className="text-sm font-semibold">{m}</span>
+                  <span className="text-sm font-light tracking-wide">{m}</span>
                 </label>
               ))}
             </div>
-            <div className="mt-4">
-              <label className="text-xs text-white/60 mb-1.5 block">Maelezo (si lazima)</label>
+            <div className="mt-5">
+              <label className="text-[10px] tracking-[0.3em] text-white/50 mb-2 block">MAELEZO YA ZIADA</label>
               <textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })}
                 rows={2} placeholder="Maelezo kwa muuzaji..."
-                className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-[#FBBC05]/60 outline-none text-sm text-white placeholder-white/30 resize-none" />
+                className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-[#FBBC05]/60 outline-none text-sm text-white placeholder-white/20 resize-none font-light" />
             </div>
           </div>
         </div>
 
         <div className="lg:col-span-1">
-          <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 sticky top-4">
-            <h2 className="text-xs tracking-widest font-bold mb-4">ODA YAKO ({cart.length})</h2>
-            <div className="space-y-2 max-h-60 overflow-y-auto scroll-thin mb-3">
+          <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10 sticky top-4">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="h-px w-8 bg-[#FBBC05]" />
+              <span className="text-[10px] tracking-[0.4em] text-[#FBBC05] font-semibold">ODA YAKO</span>
+            </div>
+            <div className="space-y-2 max-h-60 overflow-y-auto scroll-thin mb-4">
               {cart.map(({ item, product }) => (
                 <div key={product.id} className="flex items-center gap-2 text-xs">
-                  <img src={product.images[0]} alt="" className="w-10 h-10 rounded object-cover border border-white/10 bg-white" />
+                  <img src={product.images[0]} alt="" className="w-10 h-10 rounded object-cover border border-white/10" />
                   <div className="flex-1 min-w-0">
-                    <p className="truncate text-white/80">{product.name}</p>
-                    <p className="text-white/40">{item.quantity} × {formatTZS(product.price)}</p>
+                    <p className="truncate text-white/80 font-light">{product.name}</p>
+                    <p className="text-white/40 text-[10px] tracking-wide">{item.quantity} × {formatTZS(product.price)}</p>
                   </div>
                 </div>
               ))}
             </div>
-            <div className="border-t border-white/10 pt-3 space-y-1.5 text-sm">
-              <div className="flex justify-between text-white/70"><span>Subtotal</span><span>{formatTZS(subtotal)}</span></div>
-              <div className="flex justify-between text-white/70"><span>Delivery</span><span>{formatTZS(deliveryFee)}</span></div>
-              <div className="flex justify-between font-bold pt-2 border-t border-white/10">
-                <span>Jumla</span><span className="text-[#FBBC05]">{formatTZS(total)}</span>
+            <div className="border-t border-white/10 pt-4 space-y-2 text-sm">
+              <div className="flex justify-between text-white/60"><span className="font-light">Subtotal</span><span>{formatTZS(subtotal)}</span></div>
+              <div className="flex justify-between text-white/60"><span className="font-light">Delivery</span><span>{formatTZS(deliveryFee)}</span></div>
+              <div className="flex justify-between items-baseline pt-2 border-t border-white/10">
+                <span className="text-xs tracking-widest text-white/50">JUMLA</span>
+                <span className="text-2xl font-light text-[#FBBC05]">{formatTZS(total)}</span>
               </div>
             </div>
             <button type="submit"
-              className="w-full mt-4 py-3 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black font-bold text-sm flex items-center justify-center gap-2">
+              className="w-full mt-5 py-4 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black font-bold text-sm tracking-widest hover:opacity-90 transition flex items-center justify-center gap-2">
               <Check className="w-4 h-4" /> WEKA ODA
             </button>
           </div>
@@ -971,23 +1024,21 @@ function Input({ label, value, onChange, placeholder, type = 'text' }: {
 }) {
   return (
     <div>
-      <label className="text-xs text-white/60 mb-1.5 block">{label}</label>
+      <label className="text-[10px] tracking-[0.3em] text-white/50 mb-2 block">{label}</label>
       <input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
-        className="w-full px-3.5 py-2.5 rounded-xl bg-black/40 border border-white/10 focus:border-[#FBBC05]/60 outline-none text-sm text-white placeholder-white/30 transition" />
+        className="w-full px-4 py-3 rounded-xl bg-black/40 border border-white/10 focus:border-[#FBBC05]/60 outline-none text-sm text-white placeholder-white/20 transition font-light" />
     </div>
   )
 }
 
-// ============================================================
-// ORDERS VIEW
-// ============================================================
 function OrdersView({ orders, onBack }: { orders: Order[]; onBack: () => void }) {
   if (orders.length === 0) {
     return (
-      <div className="text-center py-16">
-        <Package className="w-14 h-14 text-white/15 mx-auto mb-4" />
-        <h2 className="text-xl md:text-2xl font-bold mb-2">Hauna oda bado</h2>
-        <button onClick={onBack} className="mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black text-sm font-bold tracking-widest">
+      <div className="text-center py-20">
+        <Package className="w-16 h-16 text-white/15 mx-auto mb-6" />
+        <h2 className="text-2xl md:text-3xl font-light mb-3">Hauna oda <span className="italic font-serif text-[#FBBC05]">bado</span></h2>
+        <button onClick={onBack}
+          className="mt-6 px-8 py-3 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black text-sm font-bold tracking-widest">
           ANZA KUNUNUA
         </button>
       </div>
@@ -995,75 +1046,109 @@ function OrdersView({ orders, onBack }: { orders: Order[]; onBack: () => void })
   }
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-8">
       <button onClick={onBack} className="flex items-center gap-1.5 text-xs tracking-widest text-white/50 hover:text-[#FBBC05] transition">
         <ArrowLeft className="w-3.5 h-3.5" /> RUDI
       </button>
-      <h1 className="text-2xl md:text-3xl font-black">Oda Zangu</h1>
+
+      <div>
+        <Overline>{String(orders.length).padStart(2, '0')} ODA</Overline>
+        <h1 className="text-3xl md:text-4xl font-light tracking-tight">
+          Oda <span className="italic font-serif text-[#FBBC05]">Zangu</span>
+        </h1>
+      </div>
 
       <div className="space-y-3">
         {orders.map((o) => (
-          <div key={o.id} className="p-4 rounded-2xl bg-white/[0.04] border border-white/10">
-            <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
-              <div>
-                <p className="text-[10px] tracking-widest text-white/40">ODA #{o.id}</p>
-                <p className="text-xs text-white/60">{new Date(o.createdAt).toLocaleString()}</p>
-              </div>
-              <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#FBBC05]/20 text-[#FBBC05] border border-[#FBBC05]/40">
-                {o.status.toUpperCase()}
-              </span>
-            </div>
-            <div className="space-y-2 mb-3">
-              {o.items.map((it, i) => (
-                <div key={i} className="flex items-center gap-2 text-xs">
-                  <img src={it.image} alt="" className="w-10 h-10 rounded object-cover border border-white/10 bg-white" />
-                  <div className="flex-1 min-w-0">
-                    <p className="truncate text-white/80">{it.name}</p>
-                    <p className="text-white/40">{it.quantity} × {formatTZS(it.price)} · {it.sellerName}</p>
-                  </div>
+          <FadeIn key={o.id}>
+            <div className="p-5 rounded-2xl bg-white/[0.03] border border-white/10">
+              <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
+                <div>
+                  <p className="text-[10px] tracking-[0.3em] text-white/40">ODA #{o.id}</p>
+                  <p className="text-xs text-white/50 mt-1">{new Date(o.createdAt).toLocaleString()}</p>
                 </div>
-              ))}
+                <span className="px-3 py-1.5 rounded-full text-[10px] font-bold tracking-widest bg-[#FBBC05]/15 text-[#FBBC05] border border-[#FBBC05]/40">
+                  {o.status.toUpperCase()}
+                </span>
+              </div>
+              <div className="space-y-2 mb-4">
+                {o.items.map((it, i) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <img src={it.image} alt="" className="w-12 h-12 rounded object-cover border border-white/10" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-light truncate text-white/80">{it.name}</p>
+                      <p className="text-[10px] text-white/40 tracking-wide mt-0.5">
+                        {it.quantity} × {formatTZS(it.price)} · {it.sellerName}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="pt-4 border-t border-white/5 flex items-center justify-between">
+                <span className="text-xs tracking-widest text-white/40">{o.paymentMethod.toUpperCase()}</span>
+                <span className="text-xl font-light text-[#FBBC05]">{formatTZS(o.total)}</span>
+              </div>
             </div>
-            <div className="pt-3 border-t border-white/10 flex items-center justify-between">
-              <span className="text-xs text-white/60">{o.paymentMethod}</span>
-              <span className="text-base font-bold text-[#FBBC05]">{formatTZS(o.total)}</span>
-            </div>
-          </div>
+          </FadeIn>
         ))}
       </div>
     </div>
   )
 }
 
-// ============================================================
-// SUCCESS VIEW
-// ============================================================
 function SuccessView({ order, onHome, onOrders }: { order: Order; onHome: () => void; onOrders: () => void }) {
   return (
-    <div className="text-center py-12 max-w-lg mx-auto">
+    <div className="text-center py-16 max-w-lg mx-auto">
       <motion.div
-        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: 'spring', stiffness: 200 }}
-        className="w-20 h-20 rounded-full bg-[#34A853] flex items-center justify-center mx-auto mb-5"
+        initial={{ scale: 0, rotate: -180 }} animate={{ scale: 1, rotate: 0 }}
+        transition={{ type: 'spring', stiffness: 180, damping: 18 }}
+        className="w-24 h-24 rounded-full bg-gradient-to-br from-[#FBBC05] to-[#FF8C00] flex items-center justify-center mx-auto mb-8"
       >
-        <Check className="w-10 h-10 text-white" strokeWidth={3} />
+        <Check className="w-12 h-12 text-black" strokeWidth={3} />
       </motion.div>
-      <h1 className="text-2xl md:text-3xl font-black mb-2">Oda Imewekwa!</h1>
-      <p className="text-sm text-white/60 mb-5">Asante kwa kununua kupitia M Mall</p>
 
-      <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 mb-6 text-left">
-        <p className="text-[10px] tracking-widest text-white/40 mb-1">ODA ID</p>
-        <p className="text-sm font-mono font-bold text-[#FBBC05] mb-3">{order.id}</p>
-        <p className="text-[10px] tracking-widest text-white/40 mb-1">JUMLA</p>
-        <p className="text-2xl font-black text-white mb-3">{formatTZS(order.total)}</p>
-        <p className="text-xs text-white/60">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}>
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="h-px w-8 bg-[#FBBC05]" />
+          <span className="text-[10px] tracking-[0.4em] text-[#FBBC05] font-semibold">ASANTE</span>
+          <div className="h-px w-8 bg-[#FBBC05]" />
+        </div>
+      </motion.div>
+
+      <motion.h1
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+        className="text-3xl md:text-5xl font-light tracking-tight mb-4"
+      >
+        Oda <span className="italic font-serif text-[#FBBC05]">Imewekwa</span>
+      </motion.h1>
+
+      <motion.p
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+        className="text-sm text-white/50 mb-10 font-light"
+      >
+        Asante kwa kununua kupitia M Mall
+      </motion.p>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }}
+        className="p-6 rounded-2xl bg-white/[0.03] border border-white/10 mb-8 text-left"
+      >
+        <p className="text-[10px] tracking-[0.3em] text-white/40 mb-2">ODA ID</p>
+        <p className="text-lg font-mono font-bold text-[#FBBC05] mb-4">{order.id}</p>
+        <p className="text-[10px] tracking-[0.3em] text-white/40 mb-2">JUMLA</p>
+        <p className="text-2xl font-light text-white mb-4">{formatTZS(order.total)}</p>
+        <p className="text-xs text-white/50 leading-relaxed font-light">
           Muuzaji atawasiliana nawe kwa <b className="text-white/80">{order.customerPhone}</b> kuhusu delivery na malipo.
         </p>
-      </div>
-      <div className="flex gap-2 justify-center flex-wrap">
-        <button onClick={onHome} className="px-5 py-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-sm font-bold tracking-widest">
+      </motion.div>
+
+      <div className="flex flex-wrap gap-3 justify-center">
+        <button onClick={onHome}
+          className="px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 text-sm tracking-widest font-light transition">
           ENDELEA KUNUNUA
         </button>
-        <button onClick={onOrders} className="px-5 py-2.5 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black text-sm font-bold tracking-widest">
+        <button onClick={onOrders}
+          className="px-6 py-3 rounded-full bg-gradient-to-r from-[#FBBC05] to-[#FF8C00] text-black text-sm tracking-widest font-bold hover:opacity-90 transition">
           ODA ZANGU
         </button>
       </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Search, Play, Star, TrendingUp, Clock } from 'lucide-react'
+import { Search, Play, Star } from 'lucide-react'
 
 const MOCK_MOVIES = [
   { id: 1, title: 'Black Panther', year: 2018, rating: 8.1, genre: 'Action', poster: 'https://image.tmdb.org/t/p/w300/uxzzxijgPIY7slzFvMotPv8wjKA.jpg' },
@@ -25,12 +25,7 @@ export default function MoviesSpace() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      {/* Hero */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-6 md:mb-8"
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-6 md:mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-br from-[#EA4335] to-[#FBBC05] flex items-center justify-center">
             <Play className="w-5 h-5 md:w-6 md:h-6 text-white" fill="white" />
@@ -43,11 +38,10 @@ export default function MoviesSpace() {
           </div>
         </div>
         <p className="text-white/60 text-sm md:text-base max-w-2xl">
-          Tafuta filamu, series, na animations kutoka duniani kote. Strema moja kwa moja.
+          Tafuta filamu, series, na animations kutoka duniani kote. Stream moja kwa moja.
         </p>
       </motion.div>
 
-      {/* Search + filter */}
       <div className="mb-5 md:mb-6 space-y-3">
         <div className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-white/5 border border-white/10 focus-within:border-[#EA4335]/50 transition">
           <Search className="w-4 h-4 text-white/40" />
@@ -76,7 +70,6 @@ export default function MoviesSpace() {
         </div>
       </div>
 
-      {/* Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
         {filtered.map((m, i) => (
           <motion.div
@@ -117,7 +110,6 @@ export default function MoviesSpace() {
         </div>
       )}
 
-      {/* Bottom note */}
       <div className="mt-8 text-center text-[10px] md:text-xs text-white/30 tracking-widest">
         ✦ MCENTER MEDIA ✦ {MOCK_MOVIES.length} FILAMU
       </div>
