@@ -32,6 +32,9 @@ type State = {
   query: string
   setQuery: (q: string) => void
 
+  serviceQuery: string
+  setServiceQuery: (q: string) => void
+
   activeTab: SearchTab
   setActiveTab: (t: SearchTab) => void
 
@@ -75,6 +78,9 @@ export const useStore = create<State>((set, get) => ({
   query: '',
   setQuery: (q) => set({ query: q }),
 
+  serviceQuery: '',
+  setServiceQuery: (q) => set({ serviceQuery: q }),
+
   activeTab: 'all',
   setActiveTab: (t) => set({ activeTab: t }),
 
@@ -111,6 +117,7 @@ export const useStore = create<State>((set, get) => ({
     selectedService: null,
     selectedTrend: null,
     query: '',
+    serviceQuery: '',
     results: [],
   }),
 }))

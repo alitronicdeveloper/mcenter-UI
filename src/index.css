@@ -20,9 +20,9 @@ html, body, #root {
   background: var(--mc-bg);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: #fff;
-  /* Mobile: epuka bounce scroll */
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 * { box-sizing: border-box; }
@@ -31,15 +31,16 @@ html, body, #root {
 .safe-top    { padding-top: env(safe-area-inset-top); }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
 
-/* Custom scrollbar kwa results */
-.scroll-thin::-webkit-scrollbar { width: 6px; }
+.scroll-thin::-webkit-scrollbar { width: 6px; height: 6px; }
 .scroll-thin::-webkit-scrollbar-track { background: transparent; }
 .scroll-thin::-webkit-scrollbar-thumb {
   background: rgba(255,255,255,0.15);
   border-radius: 999px;
 }
 
-/* Loading shimmer */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 @keyframes mcShimmer {
   0%   { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -48,4 +49,9 @@ html, body, #root {
   background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.15), rgba(255,255,255,0.05));
   background-size: 200% 100%;
   animation: mcShimmer 1.5s infinite;
+}
+
+/* Milestone: mobile bottom safe */
+@media (max-width: 768px) {
+  html { font-size: 14px; }
 }

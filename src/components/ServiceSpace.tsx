@@ -1,21 +1,29 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowLeft, Sparkles } from 'lucide-react'
 import { useStore } from '../store'
+import MoviesSpace from '../spaces/MoviesSpace'
+import MallSpace from '../spaces/MallSpace'
+import SalesSpace from '../spaces/SalesSpace'
+import ITServiceSpace from '../spaces/ITServiceSpace'
+import DesignSpace from '../spaces/DesignSpace'
+import PortalSpace from '../spaces/PortalSpace'
 
-const SPACES: Record<string, { name: string; color: string; tagline: string; }> = {
-  search:  { name: 'SEARCH',       color: '#4285F4', tagline: 'The web, reimagined.' },
-  movies:  { name: 'M MOVIES',     color: '#EA4335', tagline: 'Cinematic universe.' },
-  mall:    { name: 'M MALL',       color: '#FBBC05', tagline: 'Shop the stars.' },
-  chart:   { name: 'M CHART',      color: '#34A853', tagline: 'Data at light speed.' },
-  itserv:  { name: 'M ITSERVICE',  color: '#FF8C00', tagline: 'Tech that works.' },
-  design:  { name: 'M DESIGN',     color: '#A855F7', tagline: 'Create the future.' },
-  media:   { name: 'M MEDIA',      color: '#14B8A6', tagline: 'Stories in motion.' },
-  portal:  { name: 'PORTAL',       color: '#0EA5E9', tagline: 'Your gateway.' },
+const SPACES: Record<string, { name: string; color: string; component?: React.FC }> = {
+  search:  { name: 'SEARCH',       color: '#4285F4' },
+  movies:  { name: 'M MOVIES',     color: '#EA4335', component: MoviesSpace },
+  mall:    { name: 'M MALL',       color: '#FBBC05', component: MallSpace },
+  sales:   { name: 'M SALES',      color: '#34A853', component: SalesSpace },
+  chart:   { name: 'M CHART',      color: '#0EA5E9' },
+  itserv:  { name: 'M ITSERVICE',  color: '#FF8C00', component: ITServiceSpace },
+  design:  { name: 'M DESIGN',     color: '#A855F7', component: DesignSpace },
+  media:   { name: 'M MEDIA',      color: '#14B8A6' },
+  portal:  { name: 'PORTAL',       color: '#EC4899', component: PortalSpace },
 }
 
 export default function ServiceSpace() {
   const { selectedService, setView, reset } = useStore()
   const space = selectedService ? SPACES[selectedService] : null
+  const Component = space?.component
 
   const back = () => {
     setView('universe')
@@ -30,57 +38,45 @@ export default function ServiceSpace() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
-          className="fixed inset-0 z-30 flex flex-col items-center justify-center pointer-events-auto"
-          style={{
-            background: `radial-gradient(circle at center, ${space.color}22 0%, rgba(0,0,0,0.85) 60%, rgba(0,0,0,0.98) 100%)`,
-            backdropFilter: 'blur(8px)',
-          }}
+          transition={{ duration: 0.4 }}
+          className="fixed inset-0 z-40 flex flex-col overflow-hidden"
+          style={{ background: `linear-gradient(180deg, #0a0e1a 0%, #050810 40%, #000005 100%)` }}
         >
-          {/* Back button */}
-          <button
-            onClick={back}
-            className="absolute top-6 left-6 flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition text-sm"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Universe
-          </button>
+          <div className="absolute inset-0 pointer-events-none"
+            style={{ background: `radial-gradient(ellipse at 50% -10%, ${space.color}25 0%, transparent 55%)` }} />
 
-          {/* Sparkles */}
-          <Sparkles className="w-10 h-10 mb-6 animate-pulse" style={{ color: space.color }} />
+          <div className="relative flex items-center justify-between px-3 md:px-8 py-4 md:py-5 border-b border-white/10 backdrop-blur-sm shrink-0">
+            <button onClick={back}
+              className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition text-[11px] md:text-sm">
+              <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              Back
+            </button>
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4" style={{ color: space.color }} />
+              <span className="text-[10px] md:text-xs tracking-widest text-white/50">
+                {space.name} SPACE
+              </span>
+            </div>
+          </div>
 
-          {/* Name */}
-          <motion.h1
-            initial={{ scale: 0.85, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.15, duration: 0.7, ease: 'easeOut' }}
-            className="text-6xl md:text-7xl font-black tracking-[0.15em] text-center"
-            style={{ color: space.color, textShadow: `0 0 45px ${space.color}` }}
-          >
-            {space.name}
-          </motion.h1>
-
-          {/* Tagline */}
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-            className="mt-4 text-white/60 text-sm md:text-base tracking-widest"
-          >
-            {space.tagline}
-          </motion.p>
-
-          {/* Hint */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8, duration: 0.6 }}
-            className="mt-12 text-white/30 text-xs tracking-widest"
-          >
-            ✦ SPACE LOADING — STAY TUNED ✦
-          </motion.div>
+          <div className="relative flex-1 overflow-y-auto px-3 md:px-8 py-5 md:py-10 scroll-thin">
+            {Component ? <Component /> : <Placeholder name={space.name} color={space.color} />}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>
+  )
+}
+
+function Placeholder({ name, color }: { name: string; color: string }) {
+  return (
+    <div className="max-w-4xl mx-auto flex flex-col items-center justify-center text-center py-16 md:py-24">
+      <Sparkles className="w-12 h-12 md:w-16 md:h-16 mb-6 animate-pulse" style={{ color }} />
+      <h1 className="text-4xl md:text-7xl font-black tracking-tight mb-3"
+        style={{ color, textShadow: `0 0 45px ${color}` }}>
+        {name}
+      </h1>
+      <p className="text-white/50 text-sm md:text-base tracking-widest">✦ SPACE LOADING — STAY TUNED ✦</p>
+    </div>
   )
 }
